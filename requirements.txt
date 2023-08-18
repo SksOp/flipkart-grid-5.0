@@ -1,0 +1,9 @@
+pandas
+numpy
+streamit
+transformers
+openai
+langchain
+numpy
+scikit-learn
+tiktoken
