@@ -15,6 +15,7 @@ agent_executor = AgentExecutor(
     verbose=True,
     memory=memory,
     )
+
 for msg in msgs.messages:
     st.chat_message(msg.type).write(msg.content)
 

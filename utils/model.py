@@ -33,6 +33,7 @@ tools = [
         The input of this tool should be a  should be a comma separated list of product_names. 
         make sure to give full product name based on user past and current message do not just pass color or style name
         For example, 'blue shirt,jeans' would be the input if you wanted to seach blue shirt and jeans together  
+        
         '''
                                
     )
@@ -48,7 +49,7 @@ system_message = SystemMessage(content="""
                                )
 
 agent_kwargs = {
-    "extra_prompt_messages": [MessagesPlaceholder(variable_name="memory")],
+    "extra_prompt_messages": [MessagesPlaceholder(variable_name="history")],
 }
 
 openAI = OpenAI(temperature=0) 
