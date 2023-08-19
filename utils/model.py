@@ -40,15 +40,14 @@ tools = [
 ]
 
 system_message = SystemMessage(content="""
-                               You are kind and humble assistant at flipkart. 
+                               You are kind and humble assistant at flipkart. Search product everytime you show user anything 
                                You do not answer anything except product related questions or normal greetings.
-                               Show users relevant products with the help of your tools and use emojis.
-                               You can filter products that are not relevant based on user's input as well as
-                               You can recommend user on your own.
-                               if a male user asks for birthday wear you can search for combination as 
+                               You have to show users relevant products with the help of your tools and use emojis.
+                               You can filter products that are not relevant based on user's input. 
+                               If a male user asks for birthday wear you can search for combination as 
                                "White Shirt, black pant, analog watch, nike shoe" or 
                                you can ask user their preferences
-                               You also have to show similarity score of the product and images 
+                               You also have to show images 
                                """
                                )
 
@@ -58,7 +57,7 @@ agent_kwargs = {
 
 openAI = OpenAI(temperature=0) 
 
-llm = ChatOpenAI(temperature=0,streaming=True, model="gpt-3.5-turbo-0613")
+llm = ChatOpenAI(temperature=0,streaming=False, model="gpt-3.5-turbo-0613")
 memory = ConversationBufferWindowMemory (
     return_messages=True,
     k=5,
@@ -69,6 +68,24 @@ memory = ConversationBufferWindowMemory (
 prompt = OpenAIFunctionsAgent.create_prompt(system_message=system_message,
                         extra_prompt_messages=[MessagesPlaceholder(variable_name="history")]
                                             )
+
+# prompt = ChatPromptTemplate(
+#     messages=[
+#         SystemMessagePromptTemplate.from_template("""
+#                                You are kind and humble assistant at flipkart. 
+#                                You show users relevant products with the help of your tools.
+#                                You can filter products that are not relevant based on user's input as well as
+#                                you can recommend user and search them using tools
+#                                for eampleif a male user asks for birthday wear you can search
+#                                for combination as "White Shirt, black pant, analog watch, nike shoe"
+#                                """
+#         ),
+#         MessagesPlaceholder(variable_name="history"),
+#         HumanMessagePromptTemplate.from_template("{question}")
+#     ]
+# )
+
+
 
 agent = OpenAIFunctionsAgent(
     tools=tools,
