@@ -4,6 +4,9 @@ import pandas as pd
 
 def take_entrie():
     # st.set_page_config(layout="wide")
+    st.divider()
+
+    st.header("Custom purchase History")
     col1, col2 = st.columns(2)
     with col1:
         product = st.text_input("Enter the product name")
@@ -11,16 +14,21 @@ def take_entrie():
         price = st.text_input("Enter the price")
     session_state = get_session_state()
     col1, col2 = st.columns(2)
+
+    def callback_to_add_entry():
+        add_entry(session_state, product, price)
+
+    def callback_to_clear_entries():
+        session_state.entries = []
+
     with col1:
-        if st.button("Add"):
-            # st.set_page_config(layout="wide")
-            add_entry(session_state, product, price)
+        st.button("➕ Add", key="add_entry", on_click=callback_to_add_entry)
     with col2:
-        if st.button("Clear"):
-            session_state.entries = []
+        st.button("❌ Clear", key="clear", on_click=callback_to_clear_entries)
 
     # Display the table of key-value pairs
     display_entries(session_state)
+    st.divider()
 
 
 def get_session_state():
@@ -32,7 +40,7 @@ def get_session_state():
 
 def add_entry(session_state, key, value):
     # Append the new key-value pair as a dictionary to the session state
-    entry = {"Product": key, "Price": value}
+    entry = {"product_name": key, "price": value}
     session_state.entries.append(entry)
 
 
@@ -47,9 +55,3 @@ def display_entries(session_state):
     # Display the DataFrame using st.dataframe
     if not df.empty:
         st.dataframe(df)
-
-############################################################################################################
-
-# from entry_adder import take_entrie
-
-############################################################################################################
