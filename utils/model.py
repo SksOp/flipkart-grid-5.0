@@ -1,7 +1,5 @@
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
-from langchain.tools import StructuredTool
-from utils.search import search_products
 from langchain.schema import SystemMessage
 from langchain.agents import OpenAIFunctionsAgent
 from langchain.memory import ConversationBufferWindowMemory
@@ -15,10 +13,9 @@ from langchain.prompts import (
     HumanMessagePromptTemplate,
 )
 from langchain.agents.openai_functions_agent.agent_token_buffer_memory import AgentTokenBufferMemory
-
 from langchain.prompts import MessagesPlaceholder
 from langchain.memory import ConversationBufferMemory
-
+from utils.tools import tools
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -26,18 +23,7 @@ from langchain.prompts import PromptTemplate
 
 msgs = StreamlitChatMessageHistory()
 
-tools = [
-    StructuredTool.from_function(search_products,
-        description='''
-        useful when you wants to search for any products based on user past and current history. 
-        The input of this tool should be a  should be a comma separated list of product_names. 
-        make sure to give full product name based on user past and current message do not just pass color or style name
-        For example, 'blue shirt,jeans' would be the input if you wanted to seach blue shirt and jeans together  
-        
-        '''
-                               
-    )
-]
+
 
 system_message = SystemMessage(content="""
                                You are kind and humble assistant at flipkart. Search product everytime you show user anything 

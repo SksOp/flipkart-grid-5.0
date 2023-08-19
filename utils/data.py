@@ -51,8 +51,9 @@ def convert_to_matrix(data_set=csv_dataset_path):
     from sklearn.feature_extraction.text import TfidfVectorizer
     df = pd.read_csv(data_set)
     df.fillna(value='None', inplace=True)
+    # ayush -> call a function to add random trending score for each product
     tfidf_vectorizer = TfidfVectorizer(stop_words='english')
-    tfidf_matrix = tfidf_vectorizer.fit_transform(df['Product_name'] + " " + df['category'] + " " + df["brand"])
+    tfidf_matrix = tfidf_vectorizer.fit_transform(df['Product_name'] + " " + df["Brand"]+" " + df["Description"]+" " + df["Category"])
 
     return tfidf_matrix,tfidf_vectorizer
 

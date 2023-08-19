@@ -3,14 +3,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from utils.data import load_matrix_from_local,convert_to_matrix,load_csv
 import json
-
+from langchain.tools import StructuredTool
 
 def search_products(product_names: str) -> str:
     """
     Meathod to get the products as per user query
     a tool for
     :param product_names: comma(,) seperated names of products for ex shirt, pant
-    
+    :return: json response of products
     """
     
 
@@ -35,3 +35,18 @@ def search_products(product_names: str) -> str:
         final_result.append({product:results})
     
     return json.dumps(final_result)
+
+#ayush -> write a tool to get trending products based on user preference
+
+tools = [
+    StructuredTool.from_function(search_products,
+        description='''
+        useful when you wants to search for any products based on user past and current history. 
+        The input of this tool should be a  should be a comma separated list of product_names. 
+        make sure to give full product name based on user past and current message do not just pass color or style name
+        For example, 'blue shirt,jeans' would be the input if you wanted to seach blue shirt and jeans together  
+        
+        '''
+                               
+    )
+]
