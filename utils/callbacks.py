@@ -49,6 +49,7 @@ def add_image_links_to_assistant_response(response: str) -> str:
 
     pattern = r"<product_id>(.*?)</product_id>"
     result = re.sub(pattern, replace_product_tags, response)
+    # print(response)
     return result
 
 

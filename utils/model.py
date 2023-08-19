@@ -8,15 +8,13 @@ from langchain.chains import ConversationChain
 from langchain.prompts import MessagesPlaceholder
 from langchain.agents.openai_functions_agent.agent_token_buffer_memory import AgentTokenBufferMemory
 from langchain.prompts import MessagesPlaceholder
-from utils.tools import tools
+from utils.tools import tools, clean_space
 from dotenv import load_dotenv
 load_dotenv()
 
 
 # from utils.callbacks import call_me
-
-
-system_message = SystemMessage(content="""
+content = """
                                You are kind and humble assistant at flipkart 
                                who replies usign emojis.
                                Search product everytime you show user anything 
@@ -29,7 +27,8 @@ system_message = SystemMessage(content="""
                                "White Shirt, black pant, analog watch, nike shoe" or 
                                you can ask user their preferences.
                                """
-                               )
+print(clean_space(content))
+system_message = SystemMessage(content=clean_space(content))
 
 agent_kwargs = {
     "extra_prompt_messages": [MessagesPlaceholder(variable_name="history")],

@@ -8,6 +8,11 @@ import pandas as pd
 import streamlit as st
 
 
+def clean_space(string: str):
+    cleaned_string = ' '.join(string.split())
+    return cleaned_string
+
+
 def search_products(product_names: str) -> str:
     """
     Method to get the products as per user query
@@ -68,7 +73,7 @@ def get_trending_products() -> str:
         cosine_similarities = linear_kernel(query_vec, tfidf_matrix).flatten()
 
         # Get the top 30 most similar products based on cosine similarity
-        relevant_indices = cosine_similarities.argsort()[-30:][::-1]
+        relevant_indices = cosine_similarities.argsort()[-10:][::-1]
 
         # Sort the filtered products based on their trending score (assuming the column name is 'trending_score')
         results = df.iloc[relevant_indices].copy()
@@ -94,21 +99,25 @@ def get_trending_products() -> str:
     return json.dumps(final_result)
 
 
-tools = [
-    StructuredTool.from_function(search_products,
-                                 description='''
+description_for_search_products = '''
         useful when you wants to search for any products based on user past and current history. 
         The input of this tool should be a  should be a comma separated list of product_names. 
         make sure to give full product name based on user past and current message do not just pass color or style name
         For example, 'blue shirt,jeans' would be the input if you wanted to seach blue shirt and jeans together  
-        
         '''
-                                 ),
-    StructuredTool.from_function(get_trending_products,
-                                 description='''
+
+description_for_trending_products = '''
         useful when you wants to search for any trending products based on user past and current history.
         No need to pass any input to this tool.
         This tool will return trending products based on user session history.
         '''
+tools = [
+    StructuredTool.from_function(search_products,
+                                 description=clean_space(
+                                     description_for_search_products)
+                                 ),
+    StructuredTool.from_function(get_trending_products,
+                                 description=clean_space(
+                                     description_for_trending_products)
                                  )
 ]
