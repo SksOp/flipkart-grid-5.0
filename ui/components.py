@@ -2,6 +2,10 @@ import streamlit as st
 from ui.entry_adder import take_entrie
 
 
+def header():
+    st.title("Fashion Outfit Generator GenAI")
+
+
 def intro_sidebar():
     st.write("# Flipkart Grid 5.0 project")
     take_entrie()  # just a ui component

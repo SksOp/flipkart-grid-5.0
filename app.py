@@ -5,10 +5,9 @@ from langchain.agents import AgentExecutor
 from utils.model import agent, tools
 from utils.memory import memory, msgs
 # from utils.streamlit_config import config
-from ui.style import header, load_css
 from ui.entry_adder import take_entrie
 from utils.callbacks import add_image_links_to_assistant_response
-from ui.components import details_component, intro_sidebar
+from ui.components import details_component, intro_sidebar, header
 
 # set_config = config
 st.set_page_config(
@@ -17,9 +16,6 @@ st.set_page_config(
     page_icon="👗",
 )
 
-# add a title and load css
-header()
-load_css()
 
 # add a AI message if there are no messages
 if len(msgs.messages) == 0:
@@ -52,13 +48,14 @@ def chatBot(st):
         icon_type = "assistant" if msg.type == "ai" else "👤"
         content = add_image_links_to_assistant_response(
             msg.content) if msg.type == "ai" else msg.content
-        st.chat_message(icon_type).write(msg.content)
+        st.chat_message(icon_type).write(content, unsafe_allow_html=True)
 
     if prompt := st.chat_input():
         st.chat_message("user").write(prompt)
         with st.chat_message("assistant"):
             response = agent_executor.run(prompt, callbacks=[st_callback])
-            st.write(add_image_links_to_assistant_response(response))
+            st.write(add_image_links_to_assistant_response(
+                response), unsafe_allow_html=True)
 
 
 def sidebar():
@@ -68,6 +65,7 @@ def sidebar():
 
 
 def main():
+    header()
     c = st.container()
     chatBot(c)
     with st.sidebar:
