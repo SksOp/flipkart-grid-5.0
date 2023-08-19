@@ -3,3 +3,4 @@ venv/*
 utils/__pycache__/*
 */*.pkl
 dummy.py
+dummy_trending_score.py

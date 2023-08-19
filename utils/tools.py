@@ -5,6 +5,7 @@ from utils.data import load_matrix_from_local, convert_to_matrix, load_csv
 import json
 from langchain.tools import StructuredTool
 import pandas as pd
+import streamlit as st
 
 
 def search_products(product_names: str) -> str:
@@ -37,15 +38,16 @@ def search_products(product_names: str) -> str:
     return json.dumps(final_result)
 
 
-def get_trending_products(user_preference: str) -> str:
+def get_trending_products() -> str:
     """
     Method to get the trending products as per user preference, give a trending product related to each product in user_preference,
     assuming there is a trending score with respect to each product from 0 to 1 and we will rank the products found by crossing threshold of cosine similarity based on this score.
-    :param user_preference: e.g. '[{"product_name": "red shirt", "price": 500}, {"product_name": "blue jeans", "price": 5000}]'
+    :param user_preference: e.g. '{"product_name": "red shirt", "price": 500}, {"product_name": "blue jeans", "price": 5000}'
     :return: json response of product ids
     """
 
-    user_preference = json.loads(f"[{user_preference}]")
+    user_preference = st.session_state.entries
+
     no_of_product_response = 5
     final_result = []
     df = load_csv()
@@ -81,9 +83,9 @@ def get_trending_products(user_preference: str) -> str:
 
         results = results.sort_values(
             by='trending_score', ascending=False).head(no_of_product_response)
-        results = results[["product_name", "product_url", "image_link"]]
+        results = results[["product_name", "product_id"]]
         results = results.to_dict(orient="records")
-        final_result.append({str(product): results})
+        final_result.append({product: results})
 
     return json.dumps(final_result)
 
