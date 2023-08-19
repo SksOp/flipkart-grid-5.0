@@ -42,11 +42,15 @@ def get_trending_products() -> str:
     """
     Method to get the trending products as per user preference, give a trending product related to each product in user_preference,
     assuming there is a trending score with respect to each product from 0 to 1 and we will rank the products found by crossing threshold of cosine similarity based on this score.
-    :param user_preference: e.g. '{"product_name": "red shirt", "price": 500}, {"product_name": "blue jeans", "price": 5000}'
+    :param user_preference: e.g. '[{"product_name": "red shirt", "price": 500}, {"product_name": "blue jeans", "price": 5000}]'
     :return: json response of product ids
     """
 
     user_preference = st.session_state.entries
+    print(user_preference)
+    # Convert the price values to integers
+    for item in user_preference:
+        item['price'] = int(item['price'])
 
     no_of_product_response = 5
     final_result = []
@@ -85,8 +89,8 @@ def get_trending_products() -> str:
             by='trending_score', ascending=False).head(no_of_product_response)
         results = results[["product_name", "product_id"]]
         results = results.to_dict(orient="records")
-        final_result.append({product: results})
-
+        final_result.append({product["product_name"]: results})
+    print(final_result)
     return json.dumps(final_result)
 
 
@@ -102,7 +106,7 @@ tools = [
                                  ),
     StructuredTool.from_function(get_trending_products,
                                  description='''
-        useful when you wants to search for any products based on user past and current history.
+        useful when you wants to search for any trending products based on user past and current history.
         No need to pass any input to this tool.
         This tool will return trending products based on user session history.
         '''
