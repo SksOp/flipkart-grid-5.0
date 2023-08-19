@@ -6,7 +6,8 @@ import json
 from langchain.tools import StructuredTool
 import pandas as pd
 import streamlit as st
-from constants.constants import description_for_search_products, description_for_trending_products
+from constants.constants import description_for_search_products, description_for_trending_products, description_for_occasion_based_search
+from utils.helper_model import get_dress_based_on_occasion
 
 
 def clean_space(string: str):
@@ -24,7 +25,7 @@ def search_products(product_names: str) -> str:
     :param product_names: comma(,) seperated names of products for ex shirt, pant
     :return: json response of products
     """
-
+    print(product_names)
     product_names = product_names.split(",")
     no_of_product_response = 5
     final_result = []
@@ -40,7 +41,7 @@ def search_products(product_names: str) -> str:
 
         results = df.iloc[relevant_indices].copy()
         results['similarity_score'] = cosine_similarities[relevant_indices]
-        results = results[["product_name", "product_id"]]
+        results = results[["product_name", "product_id", "price"]]
         results = results.to_dict(orient="records")
         final_result.append({product: results})
 
@@ -49,8 +50,10 @@ def search_products(product_names: str) -> str:
 
 def get_trending_products() -> str:
     """
-    Method to get the trending products as per user preference, give a trending product related to each product in user_preference,
-    assuming there is a trending score with respect to each product from 0 to 1 and we will rank the products found by crossing threshold of cosine similarity based on this score.
+    Method to get the trending products as per user preference, 
+    give a trending product related to each product in user_preference,
+    assuming there is a trending score with respect to each product from 0 to 1 and 
+    we will rank the products found by crossing threshold of cosine similarity based on this score.
     :param user_preference: e.g. '[{"product_name": "red shirt", "price": 500}, {"product_name": "blue jeans", "price": 5000}]'
     :return: json response of product ids
     """
@@ -90,7 +93,7 @@ def get_trending_products() -> str:
 
         results = results.sort_values(
             by='trending_score', ascending=False).head(no_of_product_response)
-        results = results[["product_name", "product_id"]]
+        results = results[["product_name", "product_id", "price"]]
         results = results.to_dict(orient="records")
         final_result.append({product["product_name"]: results})
     print(final_result)
@@ -98,12 +101,20 @@ def get_trending_products() -> str:
 
 
 tools = [
+    StructuredTool.from_function(get_trending_products,
+                                 name="trending_products",
+                                 description=clean_space(
+                                     description_for_trending_products)
+                                 ),
     StructuredTool.from_function(search_products,
+                                 name="search_product_tool",
                                  description=clean_space(
                                      description_for_search_products)
                                  ),
-    StructuredTool.from_function(get_trending_products,
+    StructuredTool.from_function(get_dress_based_on_occasion,
+                                 name="occasion_based_search_tool",
                                  description=clean_space(
-                                     description_for_trending_products)
-                                 )
+                                     description_for_occasion_based_search)
+                                 ),
+
 ]

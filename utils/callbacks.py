@@ -53,6 +53,8 @@ def add_image_links_to_assistant_response(response: str) -> str:
     return result
 
 # we are not using this call back for now
+
+
 class on_agent_finish(BaseCallbackHandler):
     def on_agent_finish(self, finish, **kwargs):
         finish.return_values["output"] = add_image_links_to_assistant_response(

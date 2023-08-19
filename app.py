@@ -2,13 +2,12 @@
 import streamlit as st
 from langchain.callbacks import StreamlitCallbackHandler
 from langchain.agents import AgentExecutor
-from utils.model import agent
+from utils.chat_model import agent
 from utils.memory import memory, msgs
 from utils.tools import tools
-# from utils.streamlit_config import config
-from ui.entry_adder import take_entrie
 from utils.callbacks import add_image_links_to_assistant_response
-from ui.components import details_component, intro_sidebar, sidebar, header
+from ui.components import sidebar, header
+
 
 # set_config = config
 st.set_page_config(
