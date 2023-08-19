@@ -1,9 +1,10 @@
 pandas
 numpy
-streamit
+streamlit
 transformers
 openai
 langchain
 numpy
 scikit-learn
 tiktoken
+python-dotenv
