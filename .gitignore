@@ -1,6 +1,7 @@
 venv/*
 .env
 */__pycache__/*
-*/*.pkl
+*/serialised_matrix_text.pkl
 dummy.py
 dummy_trending_score.py
+data/temp/*
