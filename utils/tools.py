@@ -100,12 +100,9 @@ tools = [
                                  ),
     StructuredTool.from_function(get_trending_products,
                                  description='''
-        Useful when you want to get trending products based on a user's preferences. 
-        The input of this tool should be a comma separated JSON string, where each dictionary contains a product name and its price. 
-        For example, '{"product_name": "red shirt", "price": 500}, {"product_name": "blue jeans", "price": 5000}'
-        would be the input if you wanted to get trending products related to a red shirt and blue jeans. 
-        This tool will return a list of products that have a cosine similarity score above a certain threshold (0.8) with the given products, and then it will rank the filtered products based on their trending score.
-        
+        useful when you wants to search for any products based on user past and current history.
+        No need to pass any input to this tool.
+        This tool will return trending products based on user session history.
         '''
                                  )
 ]
