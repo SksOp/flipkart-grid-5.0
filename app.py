@@ -8,7 +8,7 @@ from utils.tools import tools
 # from utils.streamlit_config import config
 from ui.entry_adder import take_entrie
 from utils.callbacks import add_image_links_to_assistant_response
-from ui.components import details_component, intro_sidebar, header
+from ui.components import details_component, intro_sidebar, sidebar, header
 
 # set_config = config
 st.set_page_config(
@@ -40,7 +40,7 @@ agent_executor = AgentExecutor(
 st_callback = StreamlitCallbackHandler(st.container())
 
 
-def chatBot(st):
+def chatBot():
 
     st.info(
         "To add demo product to your purchase history use sidebar on left side.")
@@ -59,18 +59,10 @@ def chatBot(st):
                 response), unsafe_allow_html=True)
 
 
-def sidebar():
-    intro_sidebar()  # just a ui component
-    st.button("🚫 Clear Chat History", key="clear_memory", on_click=clear)
-    details_component()  # just a ui component
-
-
 def main():
     header()
-    c = st.container()
-    chatBot(c)
-    with st.sidebar:
-        sidebar()
+    chatBot()
+    sidebar(clear=clear)
 
 
 if __name__ == "__main__":

@@ -6,9 +6,13 @@ import json
 from langchain.tools import StructuredTool
 import pandas as pd
 import streamlit as st
+from constants.constants import description_for_search_products, description_for_trending_products
 
 
 def clean_space(string: str):
+    """
+    Remove extra spaces from a string to reduce size
+    """
     cleaned_string = ' '.join(string.split())
     return cleaned_string
 
@@ -53,7 +57,6 @@ def get_trending_products() -> str:
 
     user_preference = st.session_state.entries
     print(user_preference)
-    # Convert the price values to integers
     for item in user_preference:
         item['price'] = int(item['price'])
 
@@ -62,7 +65,6 @@ def get_trending_products() -> str:
     df = load_csv()
     tfidf_matrix, tfidf_vectorizer = load_matrix_from_local()
 
-    # Remove the ₹ symbol and convert the 'price' column to numeric
     df['price'] = pd.to_numeric(
         df['price'].str.replace('₹', ''), errors='coerce')
 
@@ -72,20 +74,16 @@ def get_trending_products() -> str:
             [product["product_name"].lower()])
         cosine_similarities = linear_kernel(query_vec, tfidf_matrix).flatten()
 
-        # Get the top 30 most similar products based on cosine similarity
+        # top 30 most similar products
         relevant_indices = cosine_similarities.argsort()[-10:][::-1]
-
-        # Sort the filtered products based on their trending score (assuming the column name is 'trending_score')
         results = df.iloc[relevant_indices].copy()
         results['similarity_score'] = cosine_similarities[relevant_indices]
 
-        # Filter products based on price range
         min_price = 0.25 * product["price"]
         max_price = 3 * product["price"]
         results = results[(results['price'] >= min_price) &
                           (results['price'] <= max_price)]
 
-        # Filter products based on the exact product type specified by the user
         product_type = product["product_name"].split()[-1].lower()
         results = results[results['product_name'].str.lower(
         ).str.contains(product_type)]
@@ -99,18 +97,6 @@ def get_trending_products() -> str:
     return json.dumps(final_result)
 
 
-description_for_search_products = '''
-        useful when you wants to search for any products based on user past and current history. 
-        The input of this tool should be a  should be a comma separated list of product_names. 
-        make sure to give full product name based on user past and current message do not just pass color or style name
-        For example, 'blue shirt,jeans' would be the input if you wanted to seach blue shirt and jeans together  
-        '''
-
-description_for_trending_products = '''
-        useful when you wants to search for any trending products based on user past and current history.
-        No need to pass any input to this tool.
-        This tool will return trending products based on user session history.
-        '''
 tools = [
     StructuredTool.from_function(search_products,
                                  description=clean_space(

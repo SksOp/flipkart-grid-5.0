@@ -21,7 +21,7 @@ def replace_product_tags(match):
     df = df[["product_id", "product_url", "image_link", "product_name"]]
     links = df[df["product_id"] == product_id][[
         "image_link", "product_url", "product_name"]]
-    links = links.iloc[0].to_dict()  # for now we have duplicate product ids
+    links = links.iloc[0].to_dict()  # as they are available in list
     # print(links)
     replacedText = ''
 
@@ -52,7 +52,7 @@ def add_image_links_to_assistant_response(response: str) -> str:
     # print(response)
     return result
 
-
+# we are not using this call back for now
 class on_agent_finish(BaseCallbackHandler):
     def on_agent_finish(self, finish, **kwargs):
         finish.return_values["output"] = add_image_links_to_assistant_response(

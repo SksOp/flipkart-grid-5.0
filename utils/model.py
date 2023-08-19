@@ -10,24 +10,12 @@ from langchain.agents.openai_functions_agent.agent_token_buffer_memory import Ag
 from langchain.prompts import MessagesPlaceholder
 from utils.tools import tools, clean_space
 from dotenv import load_dotenv
+from constants.constants import content
 load_dotenv()
 
 
 # from utils.callbacks import call_me
-content = """
-                               You are kind and humble assistant at flipkart 
-                               who replies usign emojis.
-                               Search product everytime you show user anything 
-                               You do not answer anything except product related questions or normal greetings.
-                               You have to wrap every product id with  <product_id> tag
-                               for example "1. Red shirt <product_id>TSHGKRPJBV3ZZB59</product_id>"
-                               You have to show users relevant products with the help of your tools.
-                               You can filter products that are not relevant based on user's input. 
-                               If a male user asks for birthday wear you can search for combination as 
-                               "White Shirt, black pant, analog watch, nike shoe" or 
-                               you can ask user their preferences.
-                               """
-print(clean_space(content))
+
 system_message = SystemMessage(content=clean_space(content))
 
 agent_kwargs = {

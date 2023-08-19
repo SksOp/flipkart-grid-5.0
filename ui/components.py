@@ -12,6 +12,13 @@ def intro_sidebar():
     # st.button("🔄 Rerun", key="reset", on_click=st.experimental_rerun)
 
 
+def sidebar(clear):
+    with st.sidebar:
+        intro_sidebar()  # just a ui component
+        st.button("🚫 Clear Chat History", key="clear_memory", on_click=clear)
+        details_component()
+
+
 def details_component():
     st.write("### Problem Statement")
     st.info("Conversational Fashion Outfit Generator powered by GenAI")
