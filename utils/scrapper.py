@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import requests
 import os
 import time
-from constants.social_media import links
+from constants.constants import links
 
 
 def scrapper(checkpoint=0):
