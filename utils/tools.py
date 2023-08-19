@@ -8,7 +8,7 @@ from langchain.tools import StructuredTool
 
 def search_products(product_names: str) -> str:
     """
-    Meathod to get the products as per user query
+    Method to get the products as per user query
     a tool for
     :param product_names: comma(,) seperated names of products for ex shirt, pant
     :return: json response of products
@@ -29,7 +29,7 @@ def search_products(product_names: str) -> str:
 
         results = df.iloc[relevant_indices].copy()
         results['similarity_score'] = cosine_similarities[relevant_indices]
-        results = results[["product_id"]]
+        results = results[["Product_name", "product_url", "image_link"]]
         results = results.to_dict(orient="records")
         final_result.append({product: results})
 
