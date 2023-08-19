@@ -6,7 +6,9 @@ from utils.model import agent, tools
 from utils.memory import memory, msgs
 # from utils.streamlit_config import config
 from ui.style import header, load_css
+from ui.entry_adder import take_entrie
 from utils.callbacks import add_image_links_to_assistant_response
+
 # set_config = config
 st.set_page_config(
     page_title="Fashion Outfit Generator GenAI",
@@ -65,6 +67,7 @@ def sidebar():
     st.info("Conversational Fashion Outfit Generator powered by GenAI")
     st.error("Due to token linit. Model will have last 5 messages in memory.")
     # st.button("🔄 Rerun", key="reset", on_click=st.experimental_rerun)
+    take_entrie()
     st.button("🚫 Clear Memory", key="clear_memory", on_click=clear)
     st.header("Details")
     st.markdown("✔️ Based on Current Trends")
