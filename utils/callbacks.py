@@ -14,17 +14,27 @@ def replace_product_tags(match):
     :param match: match of product id
     :return: replaced markdown text
     """
+
     product_id = match.group(1)
+    print(match.group(1))
     df = pd.read_csv(csv_dataset_path)
     df = df[["product_id", "product_url", "image_link", "product_name"]]
     links = df[df["product_id"] == product_id][[
         "image_link", "product_url", "product_name"]]
-
+    links = links.iloc[0].to_dict()  # for now we have duplicate product ids
+    # print(links)
     replacedText = ''
-    for i, row in links.iterrows():
-        replacedText += f'[Buy Now]({row["product_url"]}) ![{row["product_name"]}]({row["image_link"]})\n'
 
-    return replacedText.strip()
+    replacedText += f'''
+    <div style="margin-bottom: 10px;">
+        <div style="margin-top: 5px;display:flex;flex-direction:column;align-items: flex-start;width:fit-content;gap:5px">
+            <img src="{links["image_link"]}" alt="{links["product_name"]}" style="max-width: 100px;">
+            <a href="{links["product_url"]}" style="color: white; text-decoration: none; background-color: blue; padding: 5px 20px; border-radius: 4px;">Buy Now</a>
+        </div>
+    </div>
+    '''
+
+    return replacedText
 
 
 def add_image_links_to_assistant_response(response: str) -> str:
