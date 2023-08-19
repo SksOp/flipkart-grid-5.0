@@ -8,6 +8,3 @@ numpy
 scikit-learn
 tiktoken
 python-dotenv
-bs4
-selenium
-requests

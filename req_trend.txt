@@ -1,0 +1,9 @@
+bs4
+selenium
+requests
+numpy 
+pandas 
+torch 
+torchvision 
+Pillow 
+scikit-learn
