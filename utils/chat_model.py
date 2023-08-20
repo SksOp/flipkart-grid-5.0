@@ -6,10 +6,11 @@ from langchain.agents.openai_functions_agent.agent_token_buffer_memory import Ag
 from langchain.prompts import MessagesPlaceholder
 from utils.tools import tools, clean_space
 from constants.constants import content
-from dotenv import dotenv_values
+# from dotenv import dotenv_values
+import os
+# config = dotenv_values(".env")
+api_key = os.getenv("OPENAI_API_KEY")
 
-config = dotenv_values(".env")
-api_key = config["OPENAI_API_KEY"]
 
 # from utils.callbacks import call_me
 

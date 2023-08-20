@@ -3,10 +3,10 @@ from langchain import OpenAI, ConversationChain, LLMChain, PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.chat_models import ChatOpenAI
 from constants.constants import template, example, history
-from dotenv import dotenv_values
-
-config = dotenv_values(".env")
-api_key = config["OPENAI_API_KEY"]
+# from dotenv import dotenv_values
+import os
+# config = dotenv_values(".env")
+api_key = os.getenv("OPENAI_API_KEY")
 
 
 def clean_space(string: str):
