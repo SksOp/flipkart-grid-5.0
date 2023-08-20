@@ -30,7 +30,7 @@ def search_products(product_names: str) -> str:
     no_of_product_response = 5
     final_result = []
     df = load_csv()
-    tfidf_matrix, tfidf_vectorizer = load_matrix_from_local()
+    tfidf_matrix, tfidf_vectorizer = convert_to_matrix()
 
     for product in product_names:
         print(f'searching for {product}')
@@ -66,7 +66,7 @@ def get_trending_products() -> str:
     no_of_product_response = 5
     final_result = []
     df = load_csv()
-    tfidf_matrix, tfidf_vectorizer = load_matrix_from_local()
+    tfidf_matrix, tfidf_vectorizer = convert_to_matrix()
 
     df['price'] = pd.to_numeric(
         df['price'].str.replace('₹', ''), errors='coerce')
