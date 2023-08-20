@@ -3,9 +3,10 @@ from langchain import OpenAI, ConversationChain, LLMChain, PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.chat_models import ChatOpenAI
 from constants.constants import template, example, history
-# from dotenv import dotenv_values
+from dotenv import dotenv_values
 import os
 # config = dotenv_values(".env")
+# api_key = config["OPENAI_API_KEY"]
 api_key = os.getenv("OPENAI_API_KEY")
 
 
@@ -36,7 +37,7 @@ def get_dress_based_on_occasion(ocassion: str) -> str:
         history=history,
         human_input=ocassion
     )
-    return f"You should search for these dresses {output}"
+    return f"search for these dresses {output}"
 
 
 get_dress_based_on_occasion("Goa trip dress")

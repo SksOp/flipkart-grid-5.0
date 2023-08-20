@@ -60,6 +60,7 @@ def chatBot():
 
 def main():
     header()
+    st.button("🚫 Clear Chat History", key="clear_memory_2", on_click=clear)
     chatBot()
     sidebar(clear=clear)
 

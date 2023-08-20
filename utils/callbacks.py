@@ -21,7 +21,10 @@ def replace_product_tags(match):
     df = df[["product_id", "product_url", "image_link", "product_name"]]
     links = df[df["product_id"] == product_id][[
         "image_link", "product_url", "product_name"]]
-    links = links.iloc[0].to_dict()  # as they are available in list
+    try:
+        links = links.iloc[0].to_dict()  # as they are available in list
+    except Exception as e:
+        print(product_id, e)
     # print(links)
     replacedText = ''
 
@@ -48,8 +51,9 @@ def add_image_links_to_assistant_response(response: str) -> str:
     """
 
     pattern = r"<product_id>(.*?)</product_id>"
+
     result = re.sub(pattern, replace_product_tags, response)
-    # print(response)
+
     return result
 
 # we are not using this call back for now
