@@ -18,7 +18,8 @@ def clean_space(string: str):
     return cleaned_string
 
 
-def get_dress_based_on_occasion(ocassion: str) -> str:
+def get_dress_based_on_occasion(ocassion_and_gender: str) -> str:
+    print(ocassion_and_gender)
     helper_prompt = PromptTemplate(
         input_variables=["example", "history", "human_input"], template=clean_space(template))
 
@@ -35,7 +36,7 @@ def get_dress_based_on_occasion(ocassion: str) -> str:
     output = helper_chain.predict(
         example=example,
         history=history,
-        human_input=ocassion
+        human_input=ocassion_and_gender
     )
     return f"search for these dresses {output}"
 

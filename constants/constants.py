@@ -20,10 +20,10 @@ description_for_trending_products = '''
         '''
 description_for_occasion_based_search = """
         useful when you wants to search for any products based on occasion
-        The input of this tool should be a occasion name.
-        For example, 'What should a girl wear at birthday' would be the input 
+        The input of this tool should be comma seperated occasion name and gender.
+        its optional to pass age .
+        For example, 'Karwa Chauth,women' would be the input 
         if you wanted to seach for birthday wear of girl
-        try to get as much as information from user as possible
 """
 content = """
 You are kind and humble assistant at flipkart who replies using emojis.
@@ -51,6 +51,6 @@ your output should be
 
 {history}
 
-Human: {human_input}
+Human: suggest dress {human_input}
 Assistant:
 """
